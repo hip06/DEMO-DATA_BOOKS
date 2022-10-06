@@ -36,6 +36,28 @@ app.use('/api/v1/insert/', (req, res) => {
         })
     }
 })
+app.use('/api/v1/book/all', async (req, res) => {
+    try {
+        const { order, name, ...query } = req.query
+        const queries = { raw: true }
+        if (order) queries.order = [order]
+        if (name) query.name = { [Op.substring]: name }
+        const response = await db.Book.findAll({
+            where: query,
+            ...queries
+        })
+        return res.status(200).json({
+            err: response ? 0 : 1,
+            mes: response ? 'Got' : 'Cannot get books',
+            bookData: response
+        })
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            mes: 'Internal Server Error'
+        })
+    }
+})
 app.use('/api/v1/book/', async (req, res) => {
     try {
         const { page, limitBook, order, name, ...query } = req.query
@@ -62,6 +84,7 @@ app.use('/api/v1/book/', async (req, res) => {
         })
     }
 })
+
 
 
 const listener = app.listen(process.env.PORT, () => {

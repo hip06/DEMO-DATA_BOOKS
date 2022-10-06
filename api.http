@@ -5,3 +5,7 @@ GET http://localhost:5000/api/v1/insert
 ### GET BOOKS
 GET http://localhost:5000/api/v1/book/
 Content-Type: application/json
+
+
+### GET BOOKS ALL
+GET http://localhost:5000/api/v1/book/all?name=pass
